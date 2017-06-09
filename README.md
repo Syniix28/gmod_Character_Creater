@@ -7,7 +7,7 @@ Character Creater System for Gmod DarkRP
 ### Chat:
 
 ```
-	!setName or !sn
+!setName or !sn
 
 ```
 
