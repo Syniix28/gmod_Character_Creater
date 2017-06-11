@@ -1,5 +1,3 @@
---------------------------
-
 surface.CreateFont( "CC_Title", {
 	font = "Arial",
 	size = 23,
@@ -20,7 +18,7 @@ surface.CreateFont( "CC_ConfirmButton", {
 
 surface.CreateFont( "CC_TextEntry", {
 	font = "Arial",
-	size = 16,
+	size = 20,
 	weight = 1000,
 } )
 
@@ -42,7 +40,7 @@ end
 
 local bw, bh = 800, 500
 net.Receive("CC_OpenPanel", function(len, ply)
-	--if ( LocalPlayer():HasCharacter() ) then return end
+	if ( LocalPlayer():HasCharacter() ) then return end
 	local Base = vgui.Create("DFrame")
 	Base:SetSize(bw,bh)
 	Base:Center()
@@ -60,6 +58,12 @@ net.Receive("CC_OpenPanel", function(len, ply)
 		surface.DrawRect(25,25+37.5,w-275-50,25)
 		surface.DrawRect(25,25+37.5+70,w-275-50,25)
 		surface.DrawRect(25,25+37.5+140,w-275-50,25)
+
+		surface.SetDrawColor(255,255,255,255)
+		surface.DrawRect(0,23,w,2)
+		surface.DrawRect(25,48+37.5,w-275-50,2)
+		surface.DrawRect(25,48+37.5+70,w-275-50,2)
+		surface.DrawRect(25,48+37.5+140,w-275-50,2)
 
 		draw.SimpleText(CC_Config.Text.MenuTitle,"CC_Title",5,1,Color(255,255,255,255),TEXT_ALIGN_LEFT)
 		draw.SimpleText(CC_Config.Text.NameTitle,"CC_Text",30,25+38.5,Color(255,255,255,255),TEXT_ALIGN_LEFT)
@@ -94,17 +98,31 @@ net.Receive("CC_OpenPanel", function(len, ply)
 	MModel:SetSize(250, 400)
 	MModel:SetModel(LocalPlayer():GetModel())
 	MModel:SetFOV(45)
+	local pnl = baseclass.Get("DModelPanel")
+	MModel.Paint = function(self,w,h)
+	 	surface.SetDrawColor(0,0,0,10)
+ 		surface.DrawRect( 0, 0, w, h )
+
+ 		surface.SetDrawColor(255,255,255,255)
+ 		surface.DrawRect(0,0,w,2)
+ 		surface.DrawRect(0,h-2,w,2)
+
+ 		surface.DrawRect(0,0,2,h)
+ 		surface.DrawRect(w-2,0,2,h)
+
+	 	pnl.Paint(self, w, h)
+	end
 	function MModel:LayoutEntity( Entity ) return end
 
 	local PName = vgui.Create("DTextEntry", Base)
 	PName:SetPos(25, 25+37.5+30)
-	PName:SetSize(200, 35)
+	PName:SetSize(bw-275-50, 35)
 	PName:SetFont("CC_TextEntry")
 	PName:SetText("")
 
 	local PSex = vgui.Create("DComboBox", Base)
 	PSex:SetPos(25, 25+37.5+100)
-	PSex:SetSize(200, 35)
+	PSex:SetSize(bw-275-50, 35)
 	PSex:SetFont("CC_TextEntry")
 	PSex:SetValue(CC_Config.Sex.Sex)
 	PSex:AddChoice(CC_Config.Sex.Male)
@@ -143,10 +161,18 @@ net.Receive("CC_OpenPanel", function(len, ply)
 		if ( DCreateCharacterButton:IsHovered() ) then
 			surface.SetDrawColor(0,150,31,255)
 			surface.DrawRect(0,0,w,h)
+
+			surface.SetDrawColor(255,255,255,255)
+			surface.DrawRect(0,h-2,w,2)
+
 			draw.SimpleText(CC_Config.Text.CreateButton,"CC_ConfirmButton",w/2,1,Color(255,255,255,255),TEXT_ALIGN_CENTER)
 		else
 			surface.SetDrawColor(0,127,31,255)
 			surface.DrawRect(0,0,w,h)
+
+			surface.SetDrawColor(255,255,255,255)
+			surface.DrawRect(0,h-2,w,2)
+
 			draw.SimpleText(CC_Config.Text.CreateButton,"CC_ConfirmButton",w/2,1,Color(255,255,255,255),TEXT_ALIGN_CENTER)
 		end
 	end
